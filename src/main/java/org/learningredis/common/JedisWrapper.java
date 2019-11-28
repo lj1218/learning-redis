@@ -1,9 +1,6 @@
 package org.learningredis.common;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.ListPosition;
+import redis.clients.jedis.*;
 
 import java.util.List;
 import java.util.Map;
@@ -465,6 +462,45 @@ public class JedisWrapper extends JedisPool {
     public Long zremrangeByScore(String key, double min, double max) {
         Jedis jedis = getResource();
         Long ret = jedis.zremrangeByScore(key, min, max);
+        returnResource(jedis);
+        return ret;
+    }
+
+
+    // Publish & Subscribe
+
+    public void subscribe(JedisPubSub jedisPubSub, String... channels) {
+        Jedis jedis = getResource();
+        jedis.subscribe(jedisPubSub, channels);
+        returnResource(jedis);
+    }
+
+    public void psubscribe(JedisPubSub jedisPubSub, String... patterns) {
+        Jedis jedis = getResource();
+        jedis.psubscribe(jedisPubSub, patterns);
+        returnResource(jedis);
+    }
+
+    public Long publish(String channel, String message) {
+        Jedis jedis = getResource();
+        Long ret = jedis.publish(channel, message);
+        returnResource(jedis);
+        return ret;
+    }
+
+
+    // Pipeline
+
+    public Pipeline pipelined() {
+        Jedis jedis = getResource();
+        Pipeline ret = jedis.pipelined();
+        returnResource(jedis);
+        return ret;
+    }
+
+    public String flushDB() {
+        Jedis jedis = getResource();
+        String ret = jedis.flushDB();
         returnResource(jedis);
         return ret;
     }
