@@ -33,7 +33,7 @@ public abstract class Command {
             payload.append(msg);
             payload.append("\r\n");
         }
-        return payload.toString().trim();
+        return payload.toString();
     }
 
     protected abstract String createPayload();

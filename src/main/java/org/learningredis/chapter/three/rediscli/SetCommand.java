@@ -35,7 +35,8 @@ public class SetCommand extends Command {
         BufferedReader in = null;
         try {
             out = new PrintWriter(super.socket.getOutputStream(), true);
-            out.println(this.createPayload());
+            out.print(this.createPayload());
+            out.flush();
             // Reads from Redis server
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             // This is going to be a single line reply
