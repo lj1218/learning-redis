@@ -14,7 +14,7 @@ public class SubscriberProcessor implements Runnable {
     private boolean isSubscribed;
     private boolean isPSubscribed;
 
-    private void unsubscribe() {
+    public void unsubscribe() {
         simpleThread.interrupt();
         if (subscriber.isSubscribed()) {
             if (isSubscribed) {
@@ -26,7 +26,7 @@ public class SubscriberProcessor implements Runnable {
         }
     }
 
-    private void subscriberProcessor() {
+    public void subscriberProcessor() {
         simpleThread = new Thread(this);
         simpleThread.start();
     }

@@ -10,7 +10,7 @@ public class Publisher {
 
     private JedisWrapper jedis = new JedisWrapper();
 
-    private void publisher() {
+    public void publisher() {
         publish();
         jedis.destroy();
     }

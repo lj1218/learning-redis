@@ -20,14 +20,14 @@ public class PipelineCommandTest {
     private long endTimeWithPipeline = 0;
     private JedisWrapper jedis = new JedisWrapper();
 
-    private void getStats() {
+    public void getStats() {
         System.out.println(" time taken for test without pipeline "
                 + (endTimeWithoutPipeline - startTimeWithoutPipeline) + "ms");
         System.out.println(" time taken for test with    pipeline "
                 + (endTimeWithPipeline - startTimeWithPipeline) + "ms");
     }
 
-    private void checkWithoutPipeline() {
+    public void checkWithoutPipeline() {
         clear();
         startTimeWithoutPipeline = System.currentTimeMillis();
         for (int keys = 0; keys < KEY_NUM; ++keys) {
@@ -41,7 +41,7 @@ public class PipelineCommandTest {
         endTimeWithoutPipeline = System.currentTimeMillis();
     }
 
-    private void checkWithPipeline() {
+    public void checkWithPipeline() {
         clear();
         startTimeWithPipeline = System.currentTimeMillis();
         for (int keys = 0; keys < KEY_NUM; ++keys) {
