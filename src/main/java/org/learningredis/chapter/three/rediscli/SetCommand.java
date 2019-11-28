@@ -2,7 +2,6 @@ package org.learningredis.chapter.three.rediscli;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -12,10 +11,12 @@ import java.util.ArrayList;
  */
 public class SetCommand extends Command {
 
+    private Connection connection;
     private String key;
     private String value;
 
-    public SetCommand(String key, String value) {
+    public SetCommand(Connection connection, String key, String value) {
+        this.connection = connection;
         this.key = key;
         this.value = value;
     }
@@ -30,24 +31,17 @@ public class SetCommand extends Command {
     }
 
     @Override
-    public void execute() throws IOException {
-        PrintWriter out = null;
-        BufferedReader in = null;
+    public void execute() {
+        PrintWriter out = connection.getWriter();
+        BufferedReader in = connection.getReader();
         try {
-            out = new PrintWriter(super.socket.getOutputStream(), true);
             out.print(this.createPayload());
             out.flush();
             // Reads from Redis server
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             // This is going to be a single line reply
             System.out.println(in.readLine());
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            out.flush();
-            out.close();
-            in.close();
-            socket.close();
         }
     }
 }

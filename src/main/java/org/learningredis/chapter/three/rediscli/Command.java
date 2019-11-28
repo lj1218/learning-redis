@@ -1,7 +1,5 @@
 package org.learningredis.chapter.three.rediscli;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -9,16 +7,6 @@ import java.util.ArrayList;
  * Date: 2019/11/28
  */
 public abstract class Command {
-
-    protected Socket socket;
-
-    public Command() {
-        try {
-            socket = new Socket(ConnectionProperties.HOST, ConnectionProperties.PORT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     protected String createPayload(ArrayList<String> messageList) {
         int argumentSize = messageList.size();
@@ -38,5 +26,5 @@ public abstract class Command {
 
     protected abstract String createPayload();
 
-    public abstract void execute() throws IOException;
+    public abstract void execute();
 }
