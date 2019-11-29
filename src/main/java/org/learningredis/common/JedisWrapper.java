@@ -505,6 +505,24 @@ public class JedisWrapper extends JedisPool {
         return ret;
     }
 
+
+    // Transaction
+
+    public Transaction multi() {
+        // 不能调用 returnResource(jedis)，它会重置 transaction，从而导致 EXEC 命令执行失败
+        return getResource().multi();
+    }
+
+
+    // Scripting in Redis (Lua)
+
+    public Object eval(final String script, final List<String> keys, final List<String> args) {
+        Jedis jedis = getResource();
+        Object ret = jedis.eval(script, keys, args);
+        returnResource(jedis);
+        return ret;
+    }
+
     public void destroy() {
         super.destroy();
     }
