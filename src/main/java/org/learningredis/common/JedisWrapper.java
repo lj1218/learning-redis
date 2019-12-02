@@ -13,7 +13,11 @@ import java.util.Set;
 public class JedisWrapper extends JedisPool {
 
     public JedisWrapper() {
-        super(new JedisPoolConfig(), "localhost");
+        this(Protocol.DEFAULT_HOST, Protocol.DEFAULT_PORT);
+    }
+
+    public JedisWrapper(String host, int port) {
+        super(new JedisPoolConfig(), host, port);
     }
 
     // efficient
