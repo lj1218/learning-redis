@@ -10,6 +10,7 @@
 
     <properties>
         <jedis.version>3.1.0</jedis.version>
+        <servlet.version>4.0.1</servlet.version>
     </properties>
 
     <dependencies>
@@ -17,6 +18,12 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>${jedis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
