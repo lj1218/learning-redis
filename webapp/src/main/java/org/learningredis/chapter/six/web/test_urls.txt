@@ -1,0 +1,79 @@
+## ProductApp
+# commission（添加产品）
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=Redisbook-1:cost=10:catagory=book:author=vinoo:tags=Redis@4,NoSql@3,database@2,technology@1
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=Redisbook-2:cost=10:catagory=book:author=vinoo2:tags=Redis@4,NoSql@3,database@2,technology@1
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=Redisbook-3:cost=10:catagory=book:author=vinoo3:tags=Redis@4,NoSql@3,database@2,technology@1
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=Redisbook-4:cost=10:catagory=book:author=vinoo4:tags=Redis@4,NoSql@3,database@2,technology@1
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=Redisbook-5:cost=10:catagory=book:author=vinoo5:tags=Redis@4,NoSql@3,database@2,technology@1
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=ThinkingInJava:cost=30:catagory=book:author=xx:tags=Java@8,technology@2
+http://localhost:8080/simple-ecom/productApp?command=commission&args=name=JavaProgrammingLanguage:cost=35:catagory=book:author=xx2:tags=Java@9,technology@1
+
+# display
+http://localhost:8080/simple-ecom/productApp?command=display&args=name=Redisbook-1
+
+# display tag
+http://localhost:8080/simple-ecom/productApp?command=displaytag&args=tagname=nosql
+http://localhost:8080/simple-ecom/productApp?command=displaytag&args=tagname=Java
+
+# update tag
+http://localhost:8080/simple-ecom/productApp?command=updatetag&args=sessionid=<sessionID of the user>:productname=<product name which the user is browsing or has bought>:action=<browse or buy>
+
+# visits today
+http://localhost:8080/simple-ecom/productApp?command=visitstoday&args=productname=Redisbook-1
+
+# purchases today
+http://localhost:8080/simple-ecom/productApp?command=purchasestoday&args=productname=Redisbook-1
+
+# tag history
+http://localhost:8080/simple-ecom/productApp?command=taghistory&args=tagname=Redis
+http://localhost:8080/simple-ecom/productApp?command=taghistory&args=tagname=Java
+
+
+## UserApp
+# register
+http://localhost:8080/simple-ecom/userApp?command=register&args=name=vinoo:password=123:address=test address
+
+# login
+http://localhost:8080/simple-ecom/userApp?command=login&args=name=vinoo:password=123
+
+Login successful
+vinoo
+ use the following session id : 23375929
+
+# my data
+http://localhost:8080/simple-ecom/userApp?command=mydata&args=sessionid=23375929
+
+# edit my data
+http://localhost:8080/simple-ecom/userApp?command=editmydata&args=name=vinoo:password=123:address=changed address:phone=88888888:sessionid=23375929
+
+# browse
+http://localhost:8080/simple-ecom/userApp?command=browse&args=sessionid=23375929:browse=Redisbook-1
+http://localhost:8080/simple-ecom/userApp?command=browse&args=sessionid=23375929:browse=ThinkingInJava
+
+# recommend by product
+http://localhost:8080/simple-ecom/userApp?command=recommendbyproduct&args=sessionid=23375929:productname=Redisbook-1
+http://localhost:8080/simple-ecom/userApp?command=recommendbyproduct&args=sessionid=23375929:productname=ThinkingInJava
+
+# add to cart
+http://localhost:8080/simple-ecom/userApp?command=add2cart&args=sessionid=23375929:product=Redisbook-1@2,Redisbook-2@2,Redisbook-3@5,Redisbook-4@5,ThinkingInJava@1
+
+# show my cart
+http://localhost:8080/simple-ecom/userApp?command=showmycart&args=sessionid=23375929
+
+# edit cart
+http://localhost:8080/simple-ecom/userApp?command=editcart&args=sessionid=23375929:product=Redisbook-2@1,Redisbook-4@0
+
+# buy
+http://localhost:8080/simple-ecom/userApp?command=buy&args=sessionid=23375929
+
+# my status
+http://localhost:8080/simple-ecom/userApp?command=stats&args=sessionid=23375929
+
+# my purchase history
+http://localhost:8080/simple-ecom/userApp?command=mypurchasehistory&args=sessionid=23375929
+
+# reLogin
+http://localhost:8080/simple-ecom/userApp?command=relogin&args=name=vinoo:password=123
+
+# logout
+http://localhost:8080/simple-ecom/userApp?command=logout&args=sessionid=23375929
