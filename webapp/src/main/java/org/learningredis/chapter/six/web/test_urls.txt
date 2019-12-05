@@ -72,7 +72,7 @@ http://localhost:8080/simple-ecom/userApp?command=stats&args=sessionid=23375929
 # my purchase history
 http://localhost:8080/simple-ecom/userApp?command=mypurchasehistory&args=sessionid=23375929
 
-# reLogin
+# reLogin - 获取已登录的 sessionid
 http://localhost:8080/simple-ecom/userApp?command=relogin&args=name=vinoo:password=123
 
 # logout
