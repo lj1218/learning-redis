@@ -80,15 +80,26 @@ public class ProductDBManager extends RedisDBManager {
         return result;
     }
 
+//    public int getPurchaseToday(String productName) {
+//        Jedis jedis = getConnection();
+//        // Redis client 会把返回的 byte 数组转换为 String，这个转换过程会将无法用 UTF-8 表示的字符转换为 '?' - 65533，
+//        // 从而导致信息失真，因此统计结果是错误的。另外，我们只需获取总数，没必要获取整个 bitset 数据。改进办法为使用方法为 bitcount()。
+//        String val = jedis.get(getKeyOfPurchase(productName));
+//        returnConnection(jedis);
+//        if (val != null) {
+//            BitSet users = BitSet.valueOf(val.getBytes());
+//            return users.cardinality();
+//        }
+//        return 0;
+//    }
+
     public int getPurchaseToday(String productName) {
         Jedis jedis = getConnection();
-        String val = jedis.get(getKeyOfPurchase(productName));
+        // Redis client 会把返回的 byte 数组转换为 String，这个转换过程会将无法用 UTF-8 表示的字符转换为 '?' - 65533，
+        // 从而导致信息失真，因此统计结果是错误的。另外，我们只需获取总数，没必要获取整个 bitset 数据。改进办法为使用方法为 bitcount()。
+        long count = jedis.bitcount(getKeyOfPurchase(productName));
         returnConnection(jedis);
-        if (val != null) {
-            BitSet users = BitSet.valueOf(val.getBytes());
-            return users.cardinality();
-        }
-        return 0;
+        return (int) count;
     }
 
     public Map<String, Integer> getProductTags(String productName) {

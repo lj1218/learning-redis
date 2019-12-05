@@ -3,7 +3,6 @@ package org.learningredis.chapter.six.web.util;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
 
@@ -47,16 +46,27 @@ public class AnalyticsDBManager extends RedisDBManager {
         returnConnection(jedis);
     }
 
+//    public int getVisitToday(String productName) {
+//        Jedis jedis = getConnection();
+//        // Redis client 会把返回的 byte 数组转换为 String，这个转换过程会将无法用 UTF-8 表示的字符转换为 '?' - 65533，
+//        // 从而导致信息失真，因此统计结果是错误的。另外，我们只需获取总数，没必要获取整个 bitset 数据。改进办法为使用方法为 bitcount()。
+//        String key = productName + "@visit:" + getDate();
+//        String val = jedis.get(key);
+//        returnConnection(jedis);
+//        if (val != null) {
+//            BitSet users = BitSet.valueOf(val.getBytes());
+//            return users.cardinality();
+//        }
+//        return 0;
+//    }
+
     public int getVisitToday(String productName) {
         Jedis jedis = getConnection();
-        String key = productName + "@visit:" + getDate();
-        String val = jedis.get(key);
+        // Redis client 会把返回的 byte 数组转换为 String，这个转换过程会将无法用 UTF-8 表示的字符转换为 '?' - 65533，
+        // 从而导致信息失真，因此统计结果是错误的。另外，我们只需获取总数，没必要获取整个 bitset 数据。改进办法为使用方法为 bitcount()。
+        long count = jedis.bitcount(productName + "@visit:" + getDate());
         returnConnection(jedis);
-        if (val != null) {
-            BitSet users = BitSet.valueOf(val.getBytes());
-            return users.cardinality();
-        }
-        return 0;
+        return (int) count;
     }
 
     public void registerInSessionTracker(String sessionID) {
