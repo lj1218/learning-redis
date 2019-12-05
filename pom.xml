@@ -19,6 +19,7 @@
 
     <modules>
         <module>webapp</module>
+        <module>gossipserver</module>
     </modules>
 
     <properties>
