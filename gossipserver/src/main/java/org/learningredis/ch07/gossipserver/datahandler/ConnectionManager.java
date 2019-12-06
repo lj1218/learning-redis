@@ -1,4 +1,4 @@
-package org.learningredis.ch07.gossipserver.util;
+package org.learningredis.ch07.gossipserver.datahandler;
 
 import redis.clients.jedis.Jedis;
 

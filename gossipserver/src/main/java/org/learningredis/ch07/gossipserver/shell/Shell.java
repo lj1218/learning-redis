@@ -12,6 +12,11 @@ import java.io.InputStreamReader;
 /**
  * Created by lj1218.
  * Date: 2019/12/5
+ * <p>
+ * Shell is a program that acts like a standalone gateway to the gossip server as well as
+ * a plugin to an application that wants to use the gossip server. The shell activates the
+ * node, which in turn prepares the listeners and the command library for the node. There
+ * are two types of nodes: client nodes and the master node.
  */
 public class Shell {
 
@@ -62,12 +67,15 @@ public class Shell {
         }
         while (true) {
             BufferedReader commandReader = new BufferedReader(new InputStreamReader(System.in));
-            String readLine = commandReader.readLine();
-            if (readLine == null) {
+            String commands = commandReader.readLine();
+            if (commands == null) {
                 System.out.println("Ctrl + C");
                 break;
             }
-            CheckResult checkResult = node.process(readLine);
+            if ((commands = commands.trim()).isEmpty()) {
+                continue;
+            }
+            CheckResult checkResult = node.process(commands);
             System.out.println(":->" + checkResult.getResult());
             System.out.println(":->" + checkResult.getReason());
             System.out.println(":->" + checkResult.getValue());

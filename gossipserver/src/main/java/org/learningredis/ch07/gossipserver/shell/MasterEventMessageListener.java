@@ -1,9 +1,9 @@
 package org.learningredis.ch07.gossipserver.shell;
 
+import org.learningredis.ch07.gossipserver.datahandler.ConnectionManager;
 import org.learningredis.ch07.gossipserver.node.Node;
-import org.learningredis.ch07.gossipserver.token.MapListToken;
-import org.learningredis.ch07.gossipserver.util.ConnectionManager;
-import org.learningredis.ch07.gossipserver.util.Validator;
+import org.learningredis.ch07.gossipserver.util.commandparser.Validator;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.MapListToken;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 

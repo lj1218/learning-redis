@@ -4,12 +4,13 @@ import org.learningredis.ch07.gossipserver.commands.CloneNodeCommand;
 import org.learningredis.ch07.gossipserver.commands.KillNodeCommand;
 import org.learningredis.ch07.gossipserver.commands.MessageCommand;
 import org.learningredis.ch07.gossipserver.commands.SetCommand;
+import org.learningredis.ch07.gossipserver.datahandler.ConnectionManager;
 import org.learningredis.ch07.gossipserver.node.Node;
-import org.learningredis.ch07.gossipserver.token.CommandTokens;
-import org.learningredis.ch07.gossipserver.token.MapListToken;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
-import org.learningredis.ch07.gossipserver.util.ConnectionManager;
-import org.learningredis.ch07.gossipserver.util.Validator;
+import org.learningredis.ch07.gossipserver.util.commandparser.Commands;
+import org.learningredis.ch07.gossipserver.util.commandparser.Validator;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.CommandTokens;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.MapListToken;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
@@ -54,7 +55,7 @@ public class ClientEventMessageListener implements Runnable {
                 MapListToken mapListToken = (MapListToken) validator.getToken(0);
                 if (mapListToken.containsKey("command")) {
                     String commandValue = mapListToken.getNValue("command");
-                    if (commandValue.equals("set")) {
+                    if (commandValue.equals(Commands.SET.getValue())) {
                         MapListToken newMapListToken = mapListToken.removeElement("command");
                         SetCommand command = new SetCommand();
                         command.setName(node.getNodeName());
@@ -62,7 +63,7 @@ public class ClientEventMessageListener implements Runnable {
                                 "set " + newMapListToken.getValueAsSantizedString()));
                         System.out.println(result.getResult());
                         System.out.println(result.getReason());
-                    } else if (commandValue.equals("kill")) {
+                    } else if (commandValue.equals(Commands.KILL.getValue())) {
                         KillNodeCommand command = new KillNodeCommand();
                         command.setName(node.getNodeName());
                         MapListToken newMapListToken = mapListToken.removeElement("command");
@@ -70,7 +71,8 @@ public class ClientEventMessageListener implements Runnable {
                                 "kill " + node.getNodeName()));
                         System.out.println(result.getResult());
                         System.out.println(result.getReason());
-                    } else if (commandValue.equals("clone")) {
+                        // TODO: stop the listener
+                    } else if (commandValue.equals(Commands.CLONE.getValue())) {
                         CloneNodeCommand command = new CloneNodeCommand();
                         command.setName(node.getNodeName());
                         MapListToken newMapListToken = mapListToken.removeElement("command");
@@ -81,7 +83,7 @@ public class ClientEventMessageListener implements Runnable {
                     } else {
                         MessageCommand messageCommand = new MessageCommand();
                         messageCommand.setName(nodeName);
-                        CommandTokens commandTokens = new CommandTokens("msg master where msg=inllegal_command");
+                        CommandTokens commandTokens = new CommandTokens("msg master where msg=illegal_command");
                         messageCommand.execute(commandTokens);
                     }
                 } else {

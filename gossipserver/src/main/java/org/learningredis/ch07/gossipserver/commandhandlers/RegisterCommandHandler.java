@@ -1,9 +1,9 @@
 package org.learningredis.ch07.gossipserver.commandhandlers;
 
-import org.learningredis.ch07.gossipserver.token.Token;
+import org.learningredis.ch07.gossipserver.datahandler.ConstUtil;
+import org.learningredis.ch07.gossipserver.datahandler.JedisUtil;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
-import org.learningredis.ch07.gossipserver.util.ConstUtil;
-import org.learningredis.ch07.gossipserver.util.JedisUtil;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
 import java.util.Arrays;
 import java.util.List;

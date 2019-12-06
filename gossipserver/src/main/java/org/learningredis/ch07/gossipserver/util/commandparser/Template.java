@@ -1,6 +1,6 @@
-package org.learningredis.ch07.gossipserver.util;
+package org.learningredis.ch07.gossipserver.util.commandparser;
 
-import org.learningredis.ch07.gossipserver.token.Token;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +20,13 @@ public class Template {
 
     public Token get(int index) {
         return tokens.get(index);
+    }
+
+    public int getTokenNumber() {
+        return tokens.size();
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
     }
 }

@@ -1,8 +1,8 @@
 package org.learningredis.ch07.gossipserver.commandhandlers;
 
-import org.learningredis.ch07.gossipserver.token.Token;
+import org.learningredis.ch07.gossipserver.datahandler.JedisUtil;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
-import org.learningredis.ch07.gossipserver.util.JedisUtil;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
 import java.util.List;
 
@@ -19,7 +19,6 @@ public class StatusCommandHandler extends AbstractCommandHandler {
     @Override
     public CheckResult process(List<Token> tokenList) {
         CheckResult checkResult = new CheckResult();
-//        JedisUtil jedisUtil = new JedisUtilImpl();
         JedisUtil jedisUtil = new JedisUtil();
         if (getNodeName().equals("master")) {
             List<String> registeredNames = jedisUtil.getAllNodesFromRegistrationHolder();

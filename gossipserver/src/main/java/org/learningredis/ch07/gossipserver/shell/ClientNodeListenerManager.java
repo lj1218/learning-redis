@@ -23,7 +23,7 @@ public class ClientNodeListenerManager implements NodeMessageListenerManager {
     public void start() {
         System.out.println(" start the client node manager ..");
         privateEventThread = new Thread(privateEventMessageSubscriber);
-        commonEventThread.start();
+//        commonEventThread.start();
         privateEventThread.start();
     }
 
@@ -31,7 +31,7 @@ public class ClientNodeListenerManager implements NodeMessageListenerManager {
     public void stop() {
         System.out.println(" stop the client node manager ..");
         privateEventMessageSubscriber.unSubscribe();
-        commonEventThread.interrupt();
+//        commonEventThread.interrupt();
         privateEventThread.interrupt();
     }
 

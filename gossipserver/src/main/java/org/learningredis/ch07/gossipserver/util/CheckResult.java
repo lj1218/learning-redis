@@ -7,7 +7,7 @@ package org.learningredis.ch07.gossipserver.util;
 public class CheckResult {
 
     private StringBuffer reason = new StringBuffer();
-    private boolean result;
+    private boolean result = true;
 
     public CheckResult setTrue() {
         result = true;
@@ -20,7 +20,10 @@ public class CheckResult {
     }
 
     public CheckResult appendReason(String message) {
-        reason.append(message).append(System.lineSeparator());
+        if (reason.length() > 0) {
+            reason.append(System.lineSeparator());
+        }
+        reason.append(message);
         return this;
     }
 

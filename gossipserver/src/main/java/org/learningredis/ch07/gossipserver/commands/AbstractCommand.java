@@ -1,7 +1,7 @@
 package org.learningredis.ch07.gossipserver.commands;
 
-import org.learningredis.ch07.gossipserver.token.CommandTokens;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.CommandTokens;
 
 /**
  * Created by lj1218.

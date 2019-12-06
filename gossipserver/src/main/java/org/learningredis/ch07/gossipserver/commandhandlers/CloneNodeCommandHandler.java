@@ -1,10 +1,10 @@
 package org.learningredis.ch07.gossipserver.commandhandlers;
 
-import org.learningredis.ch07.gossipserver.token.MapListToken;
-import org.learningredis.ch07.gossipserver.token.Token;
+import org.learningredis.ch07.gossipserver.datahandler.ConstUtil;
+import org.learningredis.ch07.gossipserver.datahandler.JedisUtil;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
-import org.learningredis.ch07.gossipserver.util.ConstUtil;
-import org.learningredis.ch07.gossipserver.util.JedisUtil;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.MapListToken;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,6 @@ public class CloneNodeCommandHandler extends AbstractCommandHandler {
                         ConstUtil.shutdownHolder));
         if (targetValidityResult.get(0) && targetValidityResult.get(1)
                 && !targetValidityResult.get(2) && !targetValidityResult.get(3)) {
-            checkResult = jedisUtil.killNode(getNodeName());
             if (sourceValidityResult.get(0) && sourceValidityResult.get(1)
                     && !sourceValidityResult.get(2) && !sourceValidityResult.get(3)) {
                 checkResult = jedisUtil.clone(target, source);

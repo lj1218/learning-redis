@@ -1,11 +1,11 @@
 package org.learningredis.ch07.gossipserver.commandhandlers;
 
-import org.learningredis.ch07.gossipserver.token.MapListToken;
-import org.learningredis.ch07.gossipserver.token.StringToken;
-import org.learningredis.ch07.gossipserver.token.Token;
+import org.learningredis.ch07.gossipserver.datahandler.ConstUtil;
+import org.learningredis.ch07.gossipserver.datahandler.JedisUtil;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
-import org.learningredis.ch07.gossipserver.util.ConstUtil;
-import org.learningredis.ch07.gossipserver.util.JedisUtil;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.MapListToken;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.StringToken;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +36,7 @@ public class MessageCommandHandler extends AbstractCommandHandler {
             MapListToken data = (MapListToken) tokenList.get(3);
             checkResult = jedisUtil.publish(channel.getValue(), data.getValueAsMap());
         } else {
-            checkResult.setFalse("Activation Validation :")
+            checkResult.setFalse("Message Validation :")
                     .appendReason(ConstUtil.registrationHolder + " = " + result.get(0))
                     .appendReason(ConstUtil.activationHolder + " = " + result.get(1))
                     .appendReason(ConstUtil.passivationHolder + " = " + result.get(2));
