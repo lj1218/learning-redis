@@ -27,6 +27,7 @@
         <jedis.version>3.1.0</jedis.version>
         <servlet.version>4.0.1</servlet.version>
         <fastjson.verion>1.2.62</fastjson.verion>
+        <slf4j-log4j12.version>1.7.29</slf4j-log4j12.version>
     </properties>
 
     <dependencyManagement>
@@ -47,6 +48,14 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.verion}</version>
             </dependency>
+            <dependency>
+                <!-- https://blog.csdn.net/u010696630/article/details/84991116 -->
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j-log4j12.version}</version>
+                <!--<scope>test</scope>-->
+                <!--<scope>compile</scope>-->
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -58,6 +67,10 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
         </dependency>
     </dependencies>
 
