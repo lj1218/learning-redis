@@ -3,15 +3,13 @@ package org.learningredis.ch07.gossipserver.datahandler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.learningredis.ch07.gossipserver.util.CheckResult;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.MapListToken;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lj1218.
@@ -66,7 +64,6 @@ public class JedisUtil extends JedisPool {
 
     public Boolean doesExist(String nodeName, String holder) {
         Jedis jedis = getResource();
-//        System.out.println("holder=" + holder + ", nodeName=" + nodeName);
         boolean result = jedis.sismember(holder, nodeName);
         returnResource(jedis);
         return result;
@@ -87,40 +84,56 @@ public class JedisUtil extends JedisPool {
     }
 
     public List<String> getAllNodesFromRegistrationHolder() {
-        return null;
+        return getSetMembers(ConstUtil.registrationHolder);
     }
 
     public List<String> getAllNodesFromActivatedHolder() {
-        return null;
+        return getSetMembers(ConstUtil.activationHolder);
     }
 
     public List<String> getAllNodesFromPassivatedHolder() {
-        return null;
+        return getSetMembers(ConstUtil.passivationHolder);
     }
 
     public List<String> getAllNodesInInconsistentState() {
-        return null;
+        return getSetsInter(ConstUtil.activationHolder, ConstUtil.passivationHolder);
+    }
+
+    private List<String> getSetMembers(String holder) {
+        Jedis jedis = getResource();
+        Set<String> members = jedis.smembers(holder);
+        returnResource(jedis);
+        List<String> result = new ArrayList<>(members.size());
+        result.addAll(members);
+        return result;
+    }
+
+    private List<String> getSetsInter(String... holders) {
+        Jedis jedis = getResource();
+        Set<String> members = jedis.sinter(holders);
+        returnResource(jedis);
+        List<String> result = new ArrayList<>(members.size());
+        result.addAll(members);
+        return result;
     }
 
     public CheckResult getStatus(String nodeName) {
-        return null;
+        return new CheckResult()
+                .appendReason(ConstUtil.registrationHolder + " = "
+                        + doesExist(nodeName, ConstUtil.registrationHolder))
+                .appendReason(ConstUtil.activationHolder + " = "
+                        + doesExist(nodeName, ConstUtil.activationHolder))
+                .appendReason(ConstUtil.passivationHolder + " = "
+                        + doesExist(nodeName, ConstUtil.passivationHolder))
+                .appendReason(JSON.toJSONString(getConfigFromConfigStore(nodeName)));
     }
 
     public CheckResult passivateNode(String nodeName) {
-        Jedis jedis = getResource();
-        String configStore = ConstUtil.getConfigurationStore(nodeName);
-        Map<String, String> config = jedis.hgetAll(configStore);
-        CheckResult checkResult = dumpConfig(ConstUtil.getArchiveStore(nodeName), config);
+        CheckResult checkResult = archiveNode(nodeName);
         if (!checkResult.getResult()) {
-            returnResource(jedis);
             return checkResult;
         }
-        Pipeline pipeline = jedis.pipelined();
-        pipeline.srem(ConstUtil.activationHolder, nodeName);
-        pipeline.sadd(ConstUtil.passivationHolder, nodeName);
-        pipeline.del(configStore);
-        pipeline.sync();
-        returnResource(jedis);
+        passivateNode0(nodeName);
         return new CheckResult().appendReason("Passivation Successful");
     }
 
@@ -161,7 +174,11 @@ public class JedisUtil extends JedisPool {
                 config.put(entry.getKey(), entry.getValue().toString());
             }
             Jedis jedis = getResource();
-            jedis.hset(ConstUtil.getConfigurationStore(nodeName), config);
+            Pipeline pipeline = jedis.pipelined();
+            String configStore = ConstUtil.getConfigurationStore(nodeName);
+            pipeline.del(configStore);
+            pipeline.hset(configStore, config);
+            pipeline.sync();
             returnResource(jedis);
         } catch (IOException e) {
             checkResult.setFalse(e.getMessage());
@@ -171,26 +188,72 @@ public class JedisUtil extends JedisPool {
     }
 
     public CheckResult archiveNode(String nodeName) {
-        return null;
+        return dumpConfig(ConstUtil.getArchiveStore(nodeName), getConfigFromConfigStore(nodeName));
+    }
+
+    private Map<String, String> getConfigFromConfigStore(String nodeName) {
+        Jedis jedis = getResource();
+        Map<String, String> config = jedis.hgetAll(ConstUtil.getConfigurationStore(nodeName));
+        returnResource(jedis);
+        return config;
     }
 
     public CheckResult syncNode(String nodeName) {
-        return null;
+        return pumpConfig(nodeName);
     }
 
     public CheckResult reconnectNode(String nodeName) {
-        return null;
+        return new CheckResult();
     }
 
-    public CheckResult publish(String channel, Map<String, String> map) {
-        return null;
+    public CheckResult publish(String channel, Map<String, String> command) {
+        Jedis jedis = getResource();
+        jedis.publish(channel, MapListToken.map2SanitizedString(command));
+        returnResource(jedis);
+        return new CheckResult().appendReason("Send to desired channel: " + channel);
     }
 
     public CheckResult killNode(String nodeName) {
-        return null;
+        destroyNode(nodeName);
+        return new CheckResult();
     }
 
     public CheckResult clone(String target, String source) {
         return null;
     }
+
+    public CheckResult stopNode(String nodeName) {
+        CheckResult checkResult = archiveNode(nodeName);
+        if (!checkResult.getResult()) {
+            return checkResult;
+        }
+        passivateNode0(nodeName);
+        Jedis jedis = getResource();
+        jedis.sadd(ConstUtil.shutdownHolder, nodeName);
+        returnResource(jedis);
+        return checkResult;
+    }
+
+    private void passivateNode0(String nodeName) {
+        Jedis jedis = getResource();
+        Pipeline pipeline = jedis.pipelined();
+        pipeline.srem(ConstUtil.activationHolder, nodeName);
+        pipeline.sadd(ConstUtil.passivationHolder, nodeName);
+        pipeline.del(ConstUtil.getConfigurationStore(nodeName));
+        pipeline.sync();
+        returnResource(jedis);
+    }
+
+    private void destroyNode(String nodeName) {
+        Jedis jedis = getResource();
+        Pipeline pipeline = jedis.pipelined();
+        pipeline.srem(ConstUtil.registrationHolder, nodeName);
+        pipeline.srem(ConstUtil.activationHolder, nodeName);
+        pipeline.srem(ConstUtil.passivationHolder, nodeName);
+        pipeline.srem(ConstUtil.shutdownHolder, nodeName);
+        pipeline.del(ConstUtil.getConfigurationStore(nodeName));
+        pipeline.sync();
+        returnResource(jedis);
+    }
+
 }

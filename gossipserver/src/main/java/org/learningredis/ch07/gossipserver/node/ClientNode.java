@@ -33,6 +33,8 @@ public class ClientNode extends Node {
             command = new GetCommand();
         } else if (commands.startsWith(Commands.DEL.getValue())) {
             command = new DeleteCommand();
+        } else if (commands.startsWith(Commands.STATUS.getValue())) {
+            command = new StatusCommand();
         } else if (commands.startsWith(Commands.PASSIVATE.getValue())) {
             command = new PassivateCommand();
         } else if (commands.startsWith(Commands.REACTIVATE.getValue())) {

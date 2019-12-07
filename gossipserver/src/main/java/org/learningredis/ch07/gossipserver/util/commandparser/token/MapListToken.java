@@ -40,13 +40,17 @@ public class MapListToken extends Token {
     }
 
     public String getValueAsSantizedString() {
-        if (map.isEmpty()) {
+        return map2SanitizedString(map);
+    }
+
+    public static String map2SanitizedString(Map<String, String> hash) {
+        if (hash == null || hash.isEmpty()) {
             return "";
         }
 
         boolean isFirst = true;
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        for (Map.Entry<String, String> entry : hash.entrySet()) {
             if (!isFirst) {
                 sb.append(",");
             }

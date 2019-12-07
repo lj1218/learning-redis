@@ -33,10 +33,6 @@ public class MasterNode extends Node {
             command = new GetNodeDataCommand();
         } else if (commands.startsWith(Commands.MSG.getValue())) {
             command = new MessageCommand();
-        } else if (commands.startsWith(Commands.KILL.getValue())) {
-            command = new KillNodeCommand();
-        } else if (commands.startsWith(Commands.CLONE.getValue())) {
-            command = new CloneNodeCommand();
         } else {
             return new CheckResult().setFalse(Commands.ILLEGAL.getValue());
         }

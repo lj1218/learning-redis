@@ -60,24 +60,23 @@ public class ClientEventMessageListener implements Runnable {
                         SetCommand command = new SetCommand();
                         command.setName(node.getNodeName());
                         CheckResult result = command.execute(new CommandTokens(
-                                "set " + newMapListToken.getValueAsSantizedString()));
+                                Commands.SET.getValue() + " " + newMapListToken.getValueAsSantizedString()));
                         System.out.println(result.getResult());
                         System.out.println(result.getReason());
                     } else if (commandValue.equals(Commands.KILL.getValue())) {
                         KillNodeCommand command = new KillNodeCommand();
                         command.setName(node.getNodeName());
-                        MapListToken newMapListToken = mapListToken.removeElement("command");
+                        mapListToken.removeElement("command");
                         CheckResult result = command.execute(new CommandTokens(
-                                "kill " + node.getNodeName()));
+                                Commands.KILL.getValue() + " " + node.getNodeName()));
                         System.out.println(result.getResult());
                         System.out.println(result.getReason());
-                        // TODO: stop the listener
                     } else if (commandValue.equals(Commands.CLONE.getValue())) {
                         CloneNodeCommand command = new CloneNodeCommand();
                         command.setName(node.getNodeName());
                         MapListToken newMapListToken = mapListToken.removeElement("command");
                         CheckResult result = command.execute(new CommandTokens(
-                                "clone " + newMapListToken.getValueAsSantizedString()));
+                                Commands.CLONE.getValue() + " " + newMapListToken.getValueAsSantizedString()));
                         System.out.println(result.getResult());
                         System.out.println(result.getReason());
                     } else {

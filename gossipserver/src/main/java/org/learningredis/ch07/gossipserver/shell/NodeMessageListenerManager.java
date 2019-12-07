@@ -8,9 +8,9 @@ import org.learningredis.ch07.gossipserver.commands.AbstractCommand;
  */
 public interface NodeMessageListenerManager {
 
-    public void start();
+    void start();
 
-    public void stop();
+    void stop();
 
-    public void passCommand(AbstractCommand command);
+    void passCommand(AbstractCommand command);
 }

@@ -19,7 +19,8 @@ public class Validator {
         return template;
     }
 
-    public void setInput(String message) {
+    public void setInput(String input) {
+        setInput(new CommandTokens(input));
     }
 
     public void setInput(CommandTokens tokens) {

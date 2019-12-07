@@ -27,7 +27,7 @@ public class GetNodeDataCommandHandler extends AbstractCommandHandler {
         List<String> nodeList = nodesStringListToken.getValueAsList();
         JedisUtil jedisUtil = new JedisUtil();
         for (String nodeName : nodeList) {
-            List<Boolean> result = jedisUtil.doesExist(getNodeName(),
+            List<Boolean> result = jedisUtil.doesExist(nodeName,
                     Arrays.asList(ConstUtil.registrationHolder,
                             ConstUtil.activationHolder,
                             ConstUtil.passivationHolder,

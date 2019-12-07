@@ -66,6 +66,7 @@ public class Shell {
             node = new ClientNode(nodeName);
         }
         while (true) {
+            System.out.printf("[%s] > ", node.getNodeName());
             BufferedReader commandReader = new BufferedReader(new InputStreamReader(System.in));
             String commands = commandReader.readLine();
             if (commands == null) {
