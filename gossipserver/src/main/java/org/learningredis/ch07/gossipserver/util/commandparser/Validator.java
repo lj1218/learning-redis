@@ -38,8 +38,7 @@ public class Validator {
         int i = 0;
         CheckResult checkResult = new CheckResult();
         for (Token templateToken : templateTokens) {
-            String cmdToken = cmdTokens[i++];
-            if (!(checkResult = templateToken.setValue(cmdToken)).getResult()) {
+            if (!(checkResult = templateToken.setValue(cmdTokens[i++])).getResult()) {
                 return checkResult;
             }
         }
