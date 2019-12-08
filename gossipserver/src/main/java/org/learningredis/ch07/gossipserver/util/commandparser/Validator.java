@@ -1,7 +1,8 @@
 package org.learningredis.ch07.gossipserver.util.commandparser;
 
 import org.learningredis.ch07.gossipserver.util.CheckResult;
-import org.learningredis.ch07.gossipserver.util.commandparser.token.*;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.CommandTokens;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
 import java.util.List;
 
@@ -38,16 +39,6 @@ public class Validator {
         CheckResult checkResult = new CheckResult();
         for (Token templateToken : templateTokens) {
             String cmdToken = cmdTokens[i++];
-            if (templateToken instanceof StringToken) {
-                StringToken st = (StringToken) templateToken;
-                if (!st.getValue().isEmpty()) {
-                    if (!st.getValue().equals(cmdToken)) {
-                        return new CheckResult().setFalse("expect " + st.getValue()
-                                + ", but got " + cmdToken);
-                    }
-                    continue;
-                }
-            }
             if (!(checkResult = templateToken.setValue(cmdToken)).getResult()) {
                 return checkResult;
             }

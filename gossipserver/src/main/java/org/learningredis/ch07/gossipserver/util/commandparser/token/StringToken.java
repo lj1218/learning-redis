@@ -18,6 +18,12 @@ public class StringToken extends Token {
     }
 
     public CheckResult setValue(String value) {
+        if (!getValue().isEmpty()) {
+            if (!getValue().equals(value)) {
+                return new CheckResult().setFalse("expect " + getValue()
+                        + ", but got " + value);
+            }
+        }
         this.value = value;
         return new CheckResult();
     }
