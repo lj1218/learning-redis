@@ -75,8 +75,10 @@ public class ClientEventMessageListener implements Runnable {
                         CloneNodeCommand command = new CloneNodeCommand();
                         command.setName(node.getNodeName());
                         MapListToken newMapListToken = mapListToken.removeElement("command");
-                        CheckResult result = command.execute(new CommandTokens(
-                                Commands.CLONE.getValue() + " " + newMapListToken.getValueAsSantizedString()));
+                        String commandString = Commands.CLONE.getValue() + " "
+                                + newMapListToken.getValueAsSantizedString();
+                        System.out.println(commandString);
+                        CheckResult result = command.execute(new CommandTokens(commandString));
                         System.out.println(result.getResult());
                         System.out.println(result.getReason());
                     } else {

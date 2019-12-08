@@ -219,7 +219,15 @@ public class JedisUtil extends JedisPool {
     }
 
     public CheckResult clone(String target, String source) {
-        return null;
+        Jedis jedis = getResource();
+        Map<String, String> config = jedis.hgetAll(ConstUtil.getConfigurationStore(source));
+        String targetConfigureStore = ConstUtil.getConfigurationStore(target);
+        Pipeline pipeline = jedis.pipelined();
+        pipeline.del(targetConfigureStore);
+        pipeline.hset(targetConfigureStore, config);
+        pipeline.sync();
+        returnResource(jedis);
+        return new CheckResult().appendReason("OK");
     }
 
     public CheckResult stopNode(String nodeName) {

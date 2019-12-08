@@ -34,7 +34,7 @@ public class ConstUtil {
      * Configuration store: This is going to be implemented as a Map in the Redis data store.
      * This will hold all the configuration data pertaining to a node in the name-value format.
      */
-    public static final String configurationStore = "CONFIGURATION-STORE";
+    private static final String configurationStore = "CONFIGURATION-STORE";
 
     public static String getConfigurationStore(String nodeName) {
         return configurationStore + "@" + nodeName;

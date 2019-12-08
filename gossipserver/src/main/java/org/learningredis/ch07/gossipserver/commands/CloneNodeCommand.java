@@ -5,6 +5,7 @@ import org.learningredis.ch07.gossipserver.util.CheckResult;
 import org.learningredis.ch07.gossipserver.util.commandparser.Commands;
 import org.learningredis.ch07.gossipserver.util.commandparser.Validator;
 import org.learningredis.ch07.gossipserver.util.commandparser.token.CommandTokens;
+import org.learningredis.ch07.gossipserver.util.commandparser.token.MapListToken;
 import org.learningredis.ch07.gossipserver.util.commandparser.token.StringToken;
 import org.learningredis.ch07.gossipserver.util.commandparser.token.Token;
 
@@ -43,9 +44,11 @@ public class CloneNodeCommand extends AbstractCommand {
      * OK
      */
     public CloneNodeCommand() {
+//        validator.configureTemplate().add(new StringToken(Commands.CLONE.getValue()))
+//                .add(new StringToken()).add(new StringToken("from"))
+//                .add(new StringToken());
         validator.configureTemplate().add(new StringToken(Commands.CLONE.getValue()))
-                .add(new StringToken()).add(new StringToken("from"))
-                .add(new StringToken());
+                .add(new MapListToken());
     }
 
     @Override

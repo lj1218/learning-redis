@@ -13,6 +13,7 @@ public class ClientNodeListenerManager implements NodeMessageListenerManager {
     private ClientEventMessageListener privateEventMessageSubscriber;
     private Thread commonEventThread;
     private Thread privateEventThread;
+    private boolean started;
 
     public ClientNodeListenerManager(ClientNode clientNode) {
         nodeName = clientNode.getNodeName();
@@ -20,19 +21,29 @@ public class ClientNodeListenerManager implements NodeMessageListenerManager {
     }
 
     @Override
-    public void start() {
+    public synchronized void start() {
+        if (started) {
+            System.out.println(" the client node manager already started");
+            return;
+        }
         System.out.println(" start the client node manager ..");
         privateEventThread = new Thread(privateEventMessageSubscriber);
 //        commonEventThread.start();
         privateEventThread.start();
+        started = true;
     }
 
     @Override
-    public void stop() {
+    public synchronized void stop() {
+        if (!started) {
+            System.out.println(" the client node manager not started");
+            return;
+        }
         System.out.println(" stop the client node manager ..");
         privateEventMessageSubscriber.unSubscribe();
 //        commonEventThread.interrupt();
         privateEventThread.interrupt();
+        started = false;
     }
 
     @Override
