@@ -20,6 +20,7 @@
     <modules>
         <module>webapp</module>
         <module>gossipserver</module>
+        <module>sources</module>
     </modules>
 
     <properties>
