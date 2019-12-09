@@ -7,9 +7,9 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>webapp</artifactId>
+	<artifactId>learning-redis-webapp</artifactId>
 	<name>webapp</name>
-	<description>Redis in Web Applications</description>
+	<description>Chapter 6: Redis in Web Applications</description>
 
 	<dependencies>
 		<dependency>
