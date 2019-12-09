@@ -12,4 +12,11 @@
     <artifactId>learning-redis-sources</artifactId>
     <name>sources</name>
     <description>Source Codes of Learning Redis</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>
